@@ -24,4 +24,4 @@ source .venv/bin/activate
 # Instalar Qiskit y dependencias de ejecución
 pip install qiskit qiskit-ibm-runtime matplotlib jupyter
 
-tambień en el mismo notebook están todas las dependencias que pueden llegar a necesitar 
+# En el mismo notebook están todas las dependencias que pueden llegar a necesitar 
