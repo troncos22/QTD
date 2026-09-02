@@ -7,8 +7,9 @@ El proyecto abarca desde la construcción de estados fundamentales en la computa
 
 ## 🛠️ Contenido del Repositorio
 * **Compuertas y Estados Básicos:** Implementación de compuertas (H, X, S, Z, Toffoli) y creación de Estados de Bell.
-* **Protocolos de Comunicación:** Implementación del protocolo de Alice y Bob (Teletransportación Cuántica) testeado en hardware real.
-* **Guía de Estudio:** Solucionario basado en la guía de la Universidad Adolfo Ibáñez.
+* **Protocolos de Comunicación:** Implementación del protocolo de Alice y Bob (Teletransportación Cuántica) y criptografía BB84.
+* **Guía de Estudio:** basada en la guía de la Universidad Adolfo Ibáñez.
+* **Conección con Hardware cuántico real:** paso a paso de cómo conectarse al QC de ibm y como usar el simulador
 
 ## 💻 Requisitos y Entorno
 El notebook está diseñado para ejecutarse localmente y también enviar trabajos (jobs) a los procesadores cuánticos de IBM.
