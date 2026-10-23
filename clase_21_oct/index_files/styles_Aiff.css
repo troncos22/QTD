@@ -1,0 +1,67 @@
+/* Estilos personalizados para el curso de Matemáticas para la Computación Cuántica */
+
+/* Ocultar barras horizontales <hr> para que los saltos de diapositiva (---) no ensucien la vista web */
+hr {
+  display: none !important;
+}
+
+/* Ocultar fragmentos de pausa (. . .) en la versión web si se renderizan como texto o párrafos */
+p.fragment,
+div.fragment {
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+/* Imágenes y figuras generadas */
+figure {
+  margin: 1.5rem auto;
+  text-align: center;
+}
+
+figure img {
+  border-radius: 8px;
+  background: transparent !important;
+  box-shadow: none !important;
+  border: none !important;
+  transition: transform 0.2s ease-in-out;
+}
+
+/* Modo oscuro y claro: soporte para iframes y widgets */
+iframe {
+  border: 1px solid rgba(148, 163, 184, 0.3);
+  border-radius: 8px;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  background-color: #ffffff;
+}
+
+/* Badges y contenedores interactivos */
+.card {
+  border-radius: 8px;
+}
+
+/* ==============================================================================
+   Ajuste de tamaño de fuente para celdas interactivas de Pyodide
+   ============================================================================== */
+.pyodide-cell,
+.qpy-editor,
+.monaco-editor,
+.monaco-editor .view-line {
+  font-size: 0.85rem !important;
+  line-height: 1.4 !important;
+}
+
+.qpy-output,
+.pyodide-output,
+.qpy-console,
+.pyodide-cell pre,
+.pyodide-cell code {
+  font-size: 0.82rem !important;
+  line-height: 1.35 !important;
+}
+
+.qpy-btn-run,
+.pyodide-btn {
+  font-size: 0.8rem !important;
+  padding: 3px 8px !important;
+}

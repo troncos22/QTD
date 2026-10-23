@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.18">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Prof.&nbsp;Pablo Benítez Llambay">
+
+<title>Matemáticas y Programación para Computación Cuántica</title>
+<style class="anchorjs"></style><style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="index_files/quarto-nav_Aiff.js"></script>
+<script src="index_files/headroom.min_Aiff.js"></script>
+<script src="index_files/clipboard.min_Aiff.js"></script>
+<script src="index_files/autocomplete.umd_Aiff.js"></script>
+<script src="index_files/fuse.min_Aiff.js"></script>
+<script src="index_files/quarto-search_Aiff.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="index_files/quarto_Aiff.js" type="module"></script>
+<script src="index_files/tabsets_Aiff.js" type="module"></script>
+<script src="index_files/popper.min_Aiff.js"></script>
+<script src="index_files/tippy.umd.min_Aiff.js"></script>
+<script src="index_files/anchor.min_Aiff.js"></script>
+<link href="index_files/tippy_Aiff.css" rel="stylesheet">
+<link href="index_files/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba2_Aiff.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="https://webcursos.uai.cl/pluginfile.php/3962269/mod_resource/content/6/site_libs/quarto-html/quarto-syntax-highlighting-dark-b85bc7c33db8c58e0ec93c3465666fed.css" rel="disabled-stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="index_files/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba2_Aiff.css" rel="disabled-stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="index_files/bootstrap.min_Aiff.js"></script>
+<link href="index_files/bootstrap-icons_Aiff.css" rel="stylesheet">
+<link href="index_files/bootstrap-6a2b564723c042b0e428f357d9a015bd.min_Aiff.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="https://webcursos.uai.cl/pluginfile.php/3962269/mod_resource/content/6/site_libs/bootstrap/bootstrap-dark-e5c1a4e5cb8a150ea5a3824803bbddb8.min.css" rel="disabled-stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="index_files/bootstrap-6a2b564723c042b0e428f357d9a015bd.min_Aiff.css" rel="disabled-stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="index_files/styles_Aiff.css">
+<style id="quarto-target-style">
+      section:target::before {
+        content: "";
+        display: block;
+        height: 86px;
+        margin: -86px 0 0;
+      }</style></head>
+
+<body class="nav-fixed quarto-light" data-bs-offset="86" style="padding-top: 86px;"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top headroom--not-top headroom--not-bottom headroom--pinned">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="https://webcursos.uai.cl/pluginfile.php/3962269/mod_resource/content/6/" data-original-href="https://webcursos.uai.cl/pluginfile.php/3962269/mod_resource/content/6/index.html">
+    <span class="navbar-title">Computación Cuántica</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="type-overlay" title="Search"><div class="aa-Autocomplete" aria-label="Search" role="combobox" aria-expanded="false" aria-haspopup="listbox"><button type="button" class="aa-DetachedSearchButton" title="Search" id="autocomplete-0-label"><div class="aa-DetachedSearchButtonIcon"><svg class="aa-SubmitIcon" viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M16.041 15.856c-0.034 0.026-0.067 0.055-0.099 0.087s-0.060 0.064-0.087 0.099c-1.258 1.213-2.969 1.958-4.855 1.958-1.933 0-3.682-0.782-4.95-2.050s-2.050-3.017-2.050-4.95 0.782-3.682 2.050-4.95 3.017-2.050 4.95-2.050 3.682 0.782 4.95 2.050 2.050 3.017 2.050 4.95c0 1.886-0.745 3.597-1.959 4.856zM21.707 20.293l-3.675-3.675c1.231-1.54 1.968-3.493 1.968-5.618 0-2.485-1.008-4.736-2.636-6.364s-3.879-2.636-6.364-2.636-4.736 1.008-6.364 2.636-2.636 3.879-2.636 6.364 1.008 4.736 2.636 6.364 3.879 2.636 6.364 2.636c2.125 0 4.078-0.737 5.618-1.968l3.675 3.675c0.391 0.391 1.024 0.391 1.414 0s0.391-1.024 0-1.414z"></path></svg></div><div class="aa-DetachedSearchButtonPlaceholder"></div><div class="aa-DetachedSearchButtonQuery"></div></button></div></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link active" href="https://webcursos.uai.cl/pluginfile.php/3962269/mod_resource/content/6/" aria-current="page" data-original-href="https://webcursos.uai.cl/pluginfile.php/3962269/mod_resource/content/6/index.html"> 
+<span class="menu-text">Inicio</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="https://webcursos.uai.cl/pluginfile.php/3962269/mod_resource/content/6/modulo1.html" data-original-href="https://webcursos.uai.cl/pluginfile.php/3962269/mod_resource/content/6/modulo1.html"> 
+<span class="menu-text">Módulo 1: Matemáticas Cuánticas</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="https://webcursos.uai.cl/pluginfile.php/3962269/mod_resource/content/6/modulo2.html" data-original-href="https://webcursos.uai.cl/pluginfile.php/3962269/mod_resource/content/6/modulo2.html"> 
+<span class="menu-text">Módulo 2: Taller Numérico con Qiskit</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="https://webcursos.uai.cl/pluginfile.php/3962269/mod_resource/content/6/modulo3.html" data-original-href="https://webcursos.uai.cl/pluginfile.php/3962269/mod_resource/content/6/modulo3.html"> 
+<span class="menu-text">Módulo 3: Grover, Hardware Real y HPC</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="https://webcursos.uai.cl/pluginfile.php/3962269/mod_resource/content/6/#" id="nav-menu-diapositivas" role="link" data-bs-toggle="dropdown" aria-expanded="false" data-original-href="https://webcursos.uai.cl/pluginfile.php/3962269/mod_resource/content/6/#">
+ <span class="menu-text">Diapositivas</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-diapositivas">    
+        <li>
+    <a class="dropdown-item" href="https://webcursos.uai.cl/pluginfile.php/3962269/mod_resource/content/6/slides.html" data-original-href="https://webcursos.uai.cl/pluginfile.php/3962269/mod_resource/content/6/slides.html">
+ <span class="dropdown-text">Módulo 1: Matemáticas Cuánticas</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://webcursos.uai.cl/pluginfile.php/3962269/mod_resource/content/6/slides2.html" data-original-href="https://webcursos.uai.cl/pluginfile.php/3962269/mod_resource/content/6/slides2.html">
+ <span class="dropdown-text">Módulo 2: Taller Numérico con Qiskit</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://webcursos.uai.cl/pluginfile.php/3962269/mod_resource/content/6/slides3.html" data-original-href="https://webcursos.uai.cl/pluginfile.php/3962269/mod_resource/content/6/slides3.html">
+ <span class="dropdown-text">Módulo 3: Grover, Hardware Real y HPC</span></a>
+  </li>  
+    </ul>
+  </li>
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+  <a href="https://webcursos.uai.cl/pluginfile.php/3962269/mod_resource/content/6/" class="quarto-color-scheme-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode" data-original-href="https://webcursos.uai.cl/pluginfile.php/3962269/mod_resource/content/6/"><i class="bi"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar" style="min-height: calc(-86px + 100vh);">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar" style="top: 86px; max-height: calc(-86px + 100vh);">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">En esta página</h2>
+   
+  <ul>
+  <li><a href="https://webcursos.uai.cl/pluginfile.php/3962269/mod_resource/content/6/#acceso-a-los-materiales" id="toc-acceso-a-los-materiales" class="nav-link" data-scroll-target="#acceso-a-los-materiales" data-original-href="https://webcursos.uai.cl/pluginfile.php/3962269/mod_resource/content/6/#acceso-a-los-materiales">Acceso a los materiales</a>
+  <ul class="">
+  <li><a href="https://webcursos.uai.cl/pluginfile.php/3962269/mod_resource/content/6/#m%C3%B3dulo-1-matem%C3%A1ticas-cu%C3%A1nticas" id="toc-módulo-1-matemáticas-cuánticas" class="nav-link" data-scroll-target="#módulo-1-matemáticas-cuánticas" data-original-href="https://webcursos.uai.cl/pluginfile.php/3962269/mod_resource/content/6/#m%C3%B3dulo-1-matem%C3%A1ticas-cu%C3%A1nticas">Módulo 1: Matemáticas Cuánticas</a>
+  <ul class="collapse">
+  <li><a href="https://webcursos.uai.cl/pluginfile.php/3962269/mod_resource/content/6/#descripci%C3%B3n-del-m%C3%B3dulo-1" id="toc-descripción-del-módulo-1" class="nav-link" data-scroll-target="#descripción-del-módulo-1" data-original-href="https://webcursos.uai.cl/pluginfile.php/3962269/mod_resource/content/6/#descripci%C3%B3n-del-m%C3%B3dulo-1">Descripción del Módulo 1</a></li>
+  </ul></li>
+  <li><a href="https://webcursos.uai.cl/pluginfile.php/3962269/mod_resource/content/6/#m%C3%B3dulo-2-taller-num%C3%A9rico-programaci%C3%B3n-cu%C3%A1ntica-con-qiskit" id="toc-módulo-2-taller-numérico-programación-cuántica-con-qiskit" class="nav-link" data-scroll-target="#módulo-2-taller-numérico-programación-cuántica-con-qiskit" data-original-href="https://webcursos.uai.cl/pluginfile.php/3962269/mod_resource/content/6/#m%C3%B3dulo-2-taller-num%C3%A9rico-programaci%C3%B3n-cu%C3%A1ntica-con-qiskit">Módulo 2: Taller Numérico Programación Cuántica con Qiskit</a>
+  <ul class="collapse">
+  <li><a href="https://webcursos.uai.cl/pluginfile.php/3962269/mod_resource/content/6/#descripci%C3%B3n-del-m%C3%B3dulo-2" id="toc-descripción-del-módulo-2" class="nav-link" data-scroll-target="#descripción-del-módulo-2" data-original-href="https://webcursos.uai.cl/pluginfile.php/3962269/mod_resource/content/6/#descripci%C3%B3n-del-m%C3%B3dulo-2">Descripción del Módulo 2</a></li>
+  </ul></li>
+  <li><a href="https://webcursos.uai.cl/pluginfile.php/3962269/mod_resource/content/6/#m%C3%B3dulo-3-algoritmo-de-grover-hardware-nisq-y-superc%C3%B3mputo-cu%C3%A1ntico" id="toc-módulo-3-algoritmo-de-grover-hardware-nisq-y-supercómputo-cuántico" class="nav-link active" data-scroll-target="#módulo-3-algoritmo-de-grover-hardware-nisq-y-supercómputo-cuántico" data-original-href="https://webcursos.uai.cl/pluginfile.php/3962269/mod_resource/content/6/#m%C3%B3dulo-3-algoritmo-de-grover-hardware-nisq-y-superc%C3%B3mputo-cu%C3%A1ntico">Módulo 3: Algoritmo de Grover, Hardware NISQ y Supercómputo Cuántico</a>
+  <ul class="">
+  <li><a href="https://webcursos.uai.cl/pluginfile.php/3962269/mod_resource/content/6/#descripci%C3%B3n-del-m%C3%B3dulo-3" id="toc-descripción-del-módulo-3" class="nav-link" data-scroll-target="#descripción-del-módulo-3" data-original-href="https://webcursos.uai.cl/pluginfile.php/3962269/mod_resource/content/6/#descripci%C3%B3n-del-m%C3%B3dulo-3">Descripción del Módulo 3</a></li>
+  </ul></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Matemáticas y Programación para Computación Cuántica</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Prof.&nbsp;Pablo Benítez Llambay </p>
+          </div>
+  </div>
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="acceso-a-los-materiales" class="level1">
+<h1>Acceso a los materiales</h1>
+<ul>
+<li><a href="https://webcursos.uai.cl/pluginfile.php/3962269/mod_resource/content/6/modulo1.html" class="btn btn-primary" data-original-href="https://webcursos.uai.cl/pluginfile.php/3962269/mod_resource/content/6/modulo1.html"><strong>Módulo 1: Matemáticas Cuánticas</strong></a></li>
+<li><a href="https://webcursos.uai.cl/pluginfile.php/3962269/mod_resource/content/6/modulo2.html" class="btn btn-success" data-original-href="https://webcursos.uai.cl/pluginfile.php/3962269/mod_resource/content/6/modulo2.html"><strong>Módulo 2: Taller Numérico con Qiskit</strong></a></li>
+<li><a href="https://webcursos.uai.cl/pluginfile.php/3962269/mod_resource/content/6/modulo3.html" class="btn btn-warning" data-original-href="https://webcursos.uai.cl/pluginfile.php/3962269/mod_resource/content/6/modulo3.html"><strong>Módulo 3: Grover, Hardware Real y HPC</strong></a></li>
+<li><a href="https://webcursos.uai.cl/pluginfile.php/3962269/mod_resource/content/6/slides.html" class="btn btn-outline-primary" target="_blank" data-original-href="https://webcursos.uai.cl/pluginfile.php/3962269/mod_resource/content/6/slides.html"><strong>Diapositivas Módulo 1 ⤢</strong></a></li>
+<li><a href="https://webcursos.uai.cl/pluginfile.php/3962269/mod_resource/content/6/slides2.html" class="btn btn-outline-success" target="_blank" data-original-href="https://webcursos.uai.cl/pluginfile.php/3962269/mod_resource/content/6/slides2.html"><strong>Diapositivas Módulo 2 ⤢</strong></a></li>
+<li><a href="https://webcursos.uai.cl/pluginfile.php/3962269/mod_resource/content/6/slides3.html" class="btn btn-outline-warning" target="_blank" data-original-href="https://webcursos.uai.cl/pluginfile.php/3962269/mod_resource/content/6/slides3.html"><strong>Diapositivas Módulo 3 ⤢</strong></a></li>
+</ul>
+<section id="módulo-1-matemáticas-cuánticas" class="level2">
+<h2 class="anchored" data-anchor-id="módulo-1-matemáticas-cuánticas">Módulo 1: Matemáticas Cuánticas<a class="anchorjs-link " aria-label="Anchor" data-anchorjs-icon="" href="#módulo-1-matemáticas-cuánticas" style="font: 1em / 1 anchorjs-icons; margin-left: 0.1875em; padding-right: 0.1875em; padding-left: 0.1875em;"></a></h2>
+<p>(pantalla completa presionando la tecla F)</p>
+<div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 8px; border: 1px solid #cbd5e1; box-shadow: 0 4px 12px rgba(0,0,0,0.08); margin-bottom: 1.5rem;">
+<p><iframe src="slides.html" style="position: absolute; top:0; left: 0; width: 100%; height: 100%; border: 0;" allowfullscreen=""></iframe></p>
+</div>
+<section id="descripción-del-módulo-1" class="level3">
+<h3 class="anchored" data-anchor-id="descripción-del-módulo-1">Descripción del Módulo 1<a class="anchorjs-link " aria-label="Anchor" data-anchorjs-icon="" href="#descripción-del-módulo-1" style="font: 1em / 1 anchorjs-icons; margin-left: 0.1875em; padding-right: 0.1875em; padding-left: 0.1875em;"></a></h3>
+<p>En esta clase daremos una introducción <strong>autocontenida e intuitiva</strong>
+ a los fundamentos matemáticos de la computación cuántica. El objetivo 
+es abordar los conceptos esenciales sin requerir entrenamiento formal 
+avanzado previo, combinando álgebra lineal en espacios reales y 
+complejos con representaciones geométricas tridimensionales en la esfera
+ de Bloch, simulaciones interactivas y experimentos computacionales 
+sencillos con <strong>Python y NumPy</strong> además de <strong>Quirk</strong>.</p>
+<p>A lo largo del material, exploramos cómo la computación cuántica 
+trasciende la lógica clásica de bits y compuertas booleanas para dar 
+lugar a un paradigma computacional alternativo fundamentado en vectores 
+de estado, transformaciones unitarias, entrelazamiento e interferencia 
+cuántica.</p>
+</section>
+</section>
+<section id="módulo-2-taller-numérico-programación-cuántica-con-qiskit" class="level2">
+<h2 class="anchored" data-anchor-id="módulo-2-taller-numérico-programación-cuántica-con-qiskit">Módulo 2: Taller Numérico Programación Cuántica con Qiskit<a class="anchorjs-link " aria-label="Anchor" data-anchorjs-icon="" href="#módulo-2-taller-numérico-programación-cuántica-con-qiskit" style="font: 1em / 1 anchorjs-icons; margin-left: 0.1875em; padding-right: 0.1875em; padding-left: 0.1875em;"></a></h2>
+<p>(pantalla completa presionando la tecla F)</p>
+<div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 8px; border: 1px solid #cbd5e1; box-shadow: 0 4px 12px rgba(0,0,0,0.08); margin-bottom: 1.5rem;">
+<p><iframe src="slides2.html" style="position: absolute; top:0; left: 0; width: 100%; height: 100%; border: 0;" allowfullscreen=""></iframe></p>
+</div>
+<section id="descripción-del-módulo-2" class="level3">
+<h3 class="anchored" data-anchor-id="descripción-del-módulo-2">Descripción del Módulo 2<a class="anchorjs-link " aria-label="Anchor" data-anchorjs-icon="" href="#descripción-del-módulo-2" style="font: 1em / 1 anchorjs-icons; margin-left: 0.1875em; padding-right: 0.1875em; padding-left: 0.1875em;"></a></h3>
+<p>En este taller práctico trasladamos el marco formal a la práctica computacional utilizando <strong>Qiskit</strong>.
+ Se explora como construir, transpilar y ejecutar circuitos cuánticos, 
+transitando desde la inicialización de estados y compuertas lógicas 
+elementales hasta algoritmos cuánticos fundamentales y la simulación.</p>
+<p>Se abordan los temas de la convención Little-Endian utilizada en 
+hardware cuántico, la generación y verificación experimental de los 
+estados de Bell, la implementación del algoritmo de Deutsch mediante <em>Phase Kickback</em>, el protocolo de teleportación cuántica y el modelado de ruido físico.</p>
+</section>
+</section>
+<section id="módulo-3-algoritmo-de-grover-hardware-nisq-y-supercómputo-cuántico" class="level2">
+<h2 class="anchored" data-anchor-id="módulo-3-algoritmo-de-grover-hardware-nisq-y-supercómputo-cuántico">Módulo 3: Algoritmo de Grover, Hardware NISQ y Supercómputo Cuántico<a class="anchorjs-link " aria-label="Anchor" data-anchorjs-icon="" href="#módulo-3-algoritmo-de-grover-hardware-nisq-y-supercómputo-cuántico" style="font: 1em / 1 anchorjs-icons; margin-left: 0.1875em; padding-right: 0.1875em; padding-left: 0.1875em;"></a></h2>
+<p>(pantalla completa presionando la tecla F)</p>
+<div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 8px; border: 1px solid #cbd5e1; box-shadow: 0 4px 12px rgba(0,0,0,0.08); margin-bottom: 1.5rem;">
+<p><iframe src="slides3.html" style="position: absolute; top:0; left: 0; width: 100%; height: 100%; border: 0;" allowfullscreen=""></iframe></p>
+</div>
+<section id="descripción-del-módulo-3" class="level3">
+<h3 class="anchored" data-anchor-id="descripción-del-módulo-3">Descripción del Módulo 3<a class="anchorjs-link " aria-label="Anchor" data-anchorjs-icon="" href="#descripción-del-módulo-3" style="font: 1em / 1 anchorjs-icons; margin-left: 0.1875em; padding-right: 0.1875em; padding-left: 0.1875em;"></a></h3>
+<p>En este módulo integramos los conceptos matemáticos y la programación con Qiskit para dar el salto definitivo hacia la <strong>ventaja cuántica, la ejecución en computadores cuánticos reales y la supercomputación</strong>.</p>
+<p>Comenzamos explorando el célebre <strong>algoritmo de búsqueda de Grover</strong>,
+ comprendiendo de manera visual e intuitiva cómo la interferencia 
+cuántica amplifica la respuesta correcta para encontrar información con 
+una aceleración cuadrática imposible en la computación clásica. Luego, 
+nos conectamos con procesadores cuánticos reales de <strong>IBM Quantum</strong>
+ en la nube: aprendemos a enviar experimentos reales, comprender el 
+efecto del ruido del entorno sobre los qubits y aplicar técnicas 
+sencillas de mitigación para recuperar resultados claros.</p>
+<p>Finalmente, analizamos por qué simular muchos qubits satura rápidamente la memoria de un computador común y cómo los <strong>supercomputadores con tarjetas gráficas</strong> nos permiten explorar sistemas cuánticos a gran escala de forma controlada.</p>
+
+
+</section>
+</section>
+</section>
+
+</main> <!-- /main -->
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  document.querySelectorAll("p, div").forEach(function(el) {
+    var txt = el.textContent.trim();
+    if (txt === ". . ." || txt === "..." || txt === "…") {
+      el.remove();
+    }
+  });
+});
+</script>
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

@@ -1,0 +1,902 @@
+/* ==========================================================================
+   Estilo Minimalista, Ejecutivo y Proporcionado para RevealJS (16:9)
+   - Portada y Capítulos (#) con fondo oscuro uniforme (#090d16)
+   - Diapositivas de contenido con fondo claro puro (#ffffff)
+   - Footbar de baja altura y autor sutil
+   - Tipografía matemática vectorial MathJax nítida
+   ========================================================================== */
+
+/* Fondo general y escala base */
+.reveal {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-size: 26px;
+  color: #1e293b;
+  background-color: #ffffff;
+}
+
+/* ==========================================================================
+   1. ESTRUCTURA Y CANVAS DE LAS DIAPOSITIVAS (16:9)
+   ========================================================================== */
+.reveal .slides {
+  text-align: left;
+}
+
+.reveal .slides section {
+  box-sizing: border-box !important;
+  padding: 24px 50px !important;
+  text-align: left;
+  overflow-y: auto !important;
+  max-height: 860px !important;
+  scrollbar-width: thin !important;
+  scrollbar-color: #cbd5e1 transparent !important;
+  background: transparent !important;
+}
+
+/* ==========================================================================
+   2. CAPÍTULOS Y PORTADA OSCURA (#090d16 / level1 / dark-chapter-slide / has-dark-background)
+   ========================================================================== */
+.reveal .slides section.title-slide {
+  text-align: center !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  align-items: center !important;
+  color: #f8fafc !important;
+  padding: 40px 60px !important;
+  background: transparent !important;
+}
+
+.reveal .slides section.dark-chapter-slide,
+.reveal .slides section.level1,
+.reveal .slides section.has-dark-background,
+.reveal .slides section[data-background-color="#090d16"] {
+  text-align: center !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: flex-start !important;
+  align-items: center !important;
+  color: #f8fafc !important;
+  padding: 36px 60px 30px 60px !important;
+  background: transparent !important;
+}
+
+.reveal .slides section.title-slide h1,
+.reveal .slides section.dark-chapter-slide h1,
+.reveal .slides section.level1 h1,
+.reveal .slides section.has-dark-background h1,
+.reveal .slides section[data-background-color="#090d16"] h1 {
+  color: #ffffff !important;
+  font-size: 2.1em !important;
+  font-weight: 800 !important;
+  letter-spacing: -0.03em !important;
+  border-bottom: 3.5px solid #38bdf8 !important;
+  padding-bottom: 0.2em !important;
+  margin-top: 0 !important;
+  margin-bottom: 0.35em !important;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.4) !important;
+}
+
+.reveal .slides section.title-slide h2,
+.reveal .slides section.dark-chapter-slide h2,
+.reveal .slides section.level1 h2,
+.reveal .slides section.has-dark-background h2,
+.reveal .slides section[data-background-color="#090d16"] h2 {
+  color: #38bdf8 !important;
+  font-size: 1.45em !important;
+  font-weight: 700 !important;
+  margin-top: 0.2em !important;
+  margin-bottom: 0.5em !important;
+}
+
+.reveal .slides section.title-slide h3,
+.reveal .slides section.dark-chapter-slide h3,
+.reveal .slides section.level1 h3,
+.reveal .slides section.has-dark-background h3,
+.reveal .slides section[data-background-color="#090d16"] h3 {
+  color: #7dd3fc !important;
+  font-size: 1.25em !important;
+  font-weight: 600 !important;
+  margin-top: 0.2em !important;
+  margin-bottom: 0.6em !important;
+}
+
+.reveal .slides section.title-slide h4,
+.reveal .slides section.dark-chapter-slide h4,
+.reveal .slides section.level1 h4,
+.reveal .slides section.has-dark-background h4,
+.reveal .slides section[data-background-color="#090d16"] h4 {
+  color: #cbd5e1 !important;
+  font-size: 1.05em !important;
+  font-weight: 600 !important;
+}
+
+.reveal .slides section.title-slide p.author,
+.reveal .slides section.title-slide .quarto-title-author-name,
+.reveal .slides section.has-dark-background .quarto-title-author-name,
+.reveal .slides section[data-background-color="#090d16"] .quarto-title-author-name {
+  color: #38bdf8 !important;
+  font-size: 1.15em !important;
+  font-weight: 600 !important;
+  margin-top: 0.4em !important;
+  letter-spacing: 0.01em !important;
+}
+
+/* Párrafos en diapositivas oscuras */
+.reveal .slides section.title-slide p,
+.reveal .slides section.dark-chapter-slide p,
+.reveal .slides section.level1 p,
+.reveal .slides section.has-dark-background p,
+.reveal .slides section[data-background-color="#090d16"] p {
+  color: #f1f5f9 !important;
+  font-size: 1.05em !important;
+  line-height: 1.6 !important;
+}
+
+.reveal .slides section.title-slide > p,
+.reveal .slides section.dark-chapter-slide > p,
+.reveal .slides section.level1 > p,
+.reveal .slides section.has-dark-background > p,
+.reveal .slides section[data-background-color="#090d16"] > p {
+  text-align: center !important;
+}
+
+/* Listas en diapositivas oscuras (ALTO CONTRASTE) */
+.reveal .slides section.title-slide ul,
+.reveal .slides section.title-slide ol,
+.reveal .slides section.dark-chapter-slide ul,
+.reveal .slides section.dark-chapter-slide ol,
+.reveal .slides section.level1 ul,
+.reveal .slides section.level1 ol,
+.reveal .slides section.has-dark-background ul,
+.reveal .slides section.has-dark-background ol,
+.reveal .slides section[data-background-color="#090d16"] ul,
+.reveal .slides section[data-background-color="#090d16"] ol {
+  color: #f1f5f9 !important;
+  text-align: left !important;
+  max-width: 1350px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  margin-bottom: 0.6em !important;
+}
+
+.reveal .slides section.title-slide li,
+.reveal .slides section.dark-chapter-slide li,
+.reveal .slides section.level1 li,
+.reveal .slides section.has-dark-background li,
+.reveal .slides section[data-background-color="#090d16"] li {
+  color: #f1f5f9 !important;
+  font-size: 1.02em !important;
+  line-height: 1.6 !important;
+  margin-bottom: 0.45em !important;
+  text-align: left !important;
+}
+
+.reveal .slides section.title-slide li p,
+.reveal .slides section.dark-chapter-slide li p,
+.reveal .slides section.level1 li p,
+.reveal .slides section.has-dark-background li p,
+.reveal .slides section[data-background-color="#090d16"] li p {
+  text-align: left !important;
+  color: #f1f5f9 !important;
+  display: inline !important;
+  font-size: 1.0em !important;
+}
+
+.reveal .slides section.title-slide ol > li::marker,
+.reveal .slides section.dark-chapter-slide ol > li::marker,
+.reveal .slides section.level1 ol > li::marker,
+.reveal .slides section.has-dark-background ol > li::marker,
+.reveal .slides section[data-background-color="#090d16"] ol > li::marker {
+  color: #38bdf8 !important;
+  font-weight: 700 !important;
+}
+
+.reveal .slides section.title-slide ul > li::marker,
+.reveal .slides section.dark-chapter-slide ul > li::marker,
+.reveal .slides section.level1 ul > li::marker,
+.reveal .slides section.has-dark-background ul > li::marker,
+.reveal .slides section[data-background-color="#090d16"] ul > li::marker {
+  color: #38bdf8 !important;
+}
+
+/* Negritas y énfasis en diapositivas oscuras */
+.reveal .slides section.title-slide strong,
+.reveal .slides section.title-slide b,
+.reveal .slides section.dark-chapter-slide strong,
+.reveal .slides section.dark-chapter-slide b,
+.reveal .slides section.level1 strong,
+.reveal .slides section.level1 b,
+.reveal .slides section.has-dark-background strong,
+.reveal .slides section.has-dark-background b,
+.reveal .slides section[data-background-color="#090d16"] strong,
+.reveal .slides section[data-background-color="#090d16"] b {
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5) !important;
+}
+
+.reveal .slides section.title-slide em,
+.reveal .slides section.title-slide i,
+.reveal .slides section.dark-chapter-slide em,
+.reveal .slides section.dark-chapter-slide i,
+.reveal .slides section.level1 em,
+.reveal .slides section.level1 i,
+.reveal .slides section.has-dark-background em,
+.reveal .slides section.has-dark-background i,
+.reveal .slides section[data-background-color="#090d16"] em,
+.reveal .slides section[data-background-color="#090d16"] i {
+  color: #e2e8f0 !important;
+}
+
+/* Enlaces en diapositivas oscuras */
+.reveal .slides section.dark-chapter-slide a,
+.reveal .slides section.level1 a,
+.reveal .slides section.has-dark-background a,
+.reveal .slides section[data-background-color="#090d16"] a {
+  color: #38bdf8 !important;
+  text-decoration: underline !important;
+  text-underline-offset: 3px !important;
+  font-weight: 600 !important;
+}
+
+.reveal .slides section.dark-chapter-slide a:hover,
+.reveal .slides section.level1 a:hover,
+.reveal .slides section.has-dark-background a:hover,
+.reveal .slides section[data-background-color="#090d16"] a:hover {
+  color: #7dd3fc !important;
+}
+
+/* Código en línea en diapositivas oscuras */
+.reveal .slides section.title-slide code:not(pre code),
+.reveal .slides section.dark-chapter-slide code:not(pre code),
+.reveal .slides section.level1 code:not(pre code),
+.reveal .slides section.has-dark-background code:not(pre code),
+.reveal .slides section[data-background-color="#090d16"] code:not(pre code) {
+  color: #7dd3fc !important;
+  background-color: rgba(30, 41, 59, 0.85) !important;
+  border: 1px solid rgba(56, 189, 248, 0.3) !important;
+  border-radius: 4px !important;
+  padding: 2px 6px !important;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace !important;
+  font-size: 0.9em !important;
+}
+
+/* Tablas en diapositivas oscuras (ALTO CONTRASTE) */
+.reveal .slides section.title-slide table,
+.reveal .slides section.dark-chapter-slide table,
+.reveal .slides section.level1 table,
+.reveal .slides section.has-dark-background table,
+.reveal .slides section[data-background-color="#090d16"] table {
+  background: rgba(15, 23, 42, 0.9) !important;
+  border-radius: 8px !important;
+  overflow: hidden !important;
+  border: 1px solid rgba(56, 189, 248, 0.3) !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6) !important;
+  width: 95% !important;
+  max-width: 1400px !important;
+  margin: 0.4em auto !important;
+}
+
+.reveal .slides section.title-slide table th,
+.reveal .slides section.dark-chapter-slide table th,
+.reveal .slides section.level1 table th,
+.reveal .slides section.has-dark-background table th,
+.reveal .slides section[data-background-color="#090d16"] table th {
+  background-color: #1e293b !important;
+  color: #38bdf8 !important;
+  font-weight: 700 !important;
+  font-size: 0.88em !important;
+  border-bottom: 2px solid #38bdf8 !important;
+  padding: 6px 12px !important;
+  text-align: left !important;
+}
+
+.reveal .slides section.title-slide table td,
+.reveal .slides section.dark-chapter-slide table td,
+.reveal .slides section.level1 table td,
+.reveal .slides section.has-dark-background table td,
+.reveal .slides section[data-background-color="#090d16"] table td {
+  color: #f1f5f9 !important;
+  font-size: 0.82em !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+  padding: 6px 12px !important;
+  text-align: left !important;
+  background-color: transparent !important;
+}
+
+.reveal .slides section.title-slide table tr:hover td,
+.reveal .slides section.dark-chapter-slide table tr:hover td,
+.reveal .slides section.level1 table tr:hover td,
+.reveal .slides section.has-dark-background table tr:hover td,
+.reveal .slides section[data-background-color="#090d16"] table tr:hover td {
+  background-color: rgba(56, 189, 248, 0.08) !important;
+}
+
+/* Callouts en diapositivas oscuras */
+.reveal .slides section.dark-chapter-slide .callout,
+.reveal .slides section.level1 .callout,
+.reveal .slides section.has-dark-background .callout,
+.reveal .slides section[data-background-color="#090d16"] .callout {
+  background-color: rgba(15, 23, 42, 0.95) !important;
+  border-color: #38bdf8 !important;
+  border-left-width: 5px !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4) !important;
+  text-align: left !important;
+}
+
+.reveal .slides section.dark-chapter-slide .callout p,
+.reveal .slides section.dark-chapter-slide .callout li,
+.reveal .slides section.level1 .callout p,
+.reveal .slides section.level1 .callout li,
+.reveal .slides section.has-dark-background .callout p,
+.reveal .slides section.has-dark-background .callout li,
+.reveal .slides section[data-background-color="#090d16"] .callout p,
+.reveal .slides section[data-background-color="#090d16"] .callout li {
+  color: #f8fafc !important;
+  font-size: 1.05em !important;
+  line-height: 1.6 !important;
+  text-align: left !important;
+}
+
+.reveal .slides section.dark-chapter-slide .callout-header,
+.reveal .slides section.level1 .callout-header,
+.reveal .slides section.has-dark-background .callout-header,
+.reveal .slides section[data-background-color="#090d16"] .callout-header {
+  color: #38bdf8 !important;
+  font-weight: 700 !important;
+}
+
+.reveal .slides section.dark-chapter-slide .callout-header h3,
+.reveal .slides section.dark-chapter-slide .callout-header h4,
+.reveal .slides section.level1 .callout-header h3,
+.reveal .slides section.level1 .callout-header h4,
+.reveal .slides section.has-dark-background .callout-header h3,
+.reveal .slides section.has-dark-background .callout-header h4,
+.reveal .slides section[data-background-color="#090d16"] .callout-header h3,
+.reveal .slides section[data-background-color="#090d16"] .callout-header h4 {
+  color: #38bdf8 !important;
+  border: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.reveal .slides section.dark-chapter-slide .callout strong,
+.reveal .slides section.dark-chapter-slide .callout b,
+.reveal .slides section.level1 .callout strong,
+.reveal .slides section.level1 .callout b,
+.reveal .slides section.has-dark-background .callout strong,
+.reveal .slides section.has-dark-background .callout b,
+.reveal .slides section[data-background-color="#090d16"] .callout strong,
+.reveal .slides section[data-background-color="#090d16"] .callout b {
+  color: #ffffff !important;
+}
+
+/* Fórmulas matemáticas KaTeX en diapositivas oscuras */
+.reveal .slides section.title-slide .katex,
+.reveal .slides section.dark-chapter-slide .katex,
+.reveal .slides section.level1 .katex,
+.reveal .slides section.has-dark-background .katex,
+.reveal .slides section[data-background-color="#090d16"] .katex {
+  color: #ffffff !important;
+}
+
+/* Botones de descarga y enlaces de estilo botón */
+.reveal a.btn {
+  display: inline-flex !important;
+  align-items: center !important;
+  padding: 3px 10px !important;
+  font-size: 0.85em !important;
+  font-weight: 600 !important;
+  text-decoration: none !important;
+  border-radius: 6px !important;
+  margin: 2px 4px !important;
+  vertical-align: middle !important;
+  transition: all 0.2s ease !important;
+}
+
+.reveal a.btn code {
+  background: transparent !important;
+  border: none !important;
+  padding: 0 !important;
+  color: inherit !important;
+}
+
+.reveal a.btn-outline-primary {
+  color: #2563eb !important;
+  border: 1.5px solid #2563eb !important;
+  background-color: #eff6ff !important;
+}
+
+.reveal a.btn-outline-primary:hover {
+  background-color: #2563eb !important;
+  color: #ffffff !important;
+}
+
+.reveal a.btn-outline-success {
+  color: #059669 !important;
+  border: 1.5px solid #059669 !important;
+  background-color: #ecfdf5 !important;
+}
+
+.reveal a.btn-outline-success:hover {
+  background-color: #059669 !important;
+  color: #ffffff !important;
+}
+
+.reveal .slides section.dark-chapter-slide a.btn-outline-primary,
+.reveal .slides section.level1 a.btn-outline-primary,
+.reveal .slides section.has-dark-background a.btn-outline-primary,
+.reveal .slides section[data-background-color="#090d16"] a.btn-outline-primary {
+  color: #38bdf8 !important;
+  border: 1.5px solid #38bdf8 !important;
+  background-color: rgba(56, 189, 248, 0.12) !important;
+}
+
+.reveal .slides section.dark-chapter-slide a.btn-outline-primary:hover,
+.reveal .slides section.level1 a.btn-outline-primary:hover,
+.reveal .slides section.has-dark-background a.btn-outline-primary:hover,
+.reveal .slides section[data-background-color="#090d16"] a.btn-outline-primary:hover {
+  background-color: #38bdf8 !important;
+  color: #090d16 !important;
+}
+
+.reveal .slides section.dark-chapter-slide a.btn-outline-success,
+.reveal .slides section.level1 a.btn-outline-success,
+.reveal .slides section.has-dark-background a.btn-outline-success,
+.reveal .slides section[data-background-color="#090d16"] a.btn-outline-success {
+  color: #4ade80 !important;
+  border: 1.5px solid #4ade80 !important;
+  background-color: rgba(74, 222, 128, 0.12) !important;
+}
+
+.reveal .slides section.dark-chapter-slide a.btn-outline-success:hover,
+.reveal .slides section.level1 a.btn-outline-success:hover,
+.reveal .slides section.has-dark-background a.btn-outline-success:hover,
+.reveal .slides section[data-background-color="#090d16"] a.btn-outline-success:hover {
+  background-color: #4ade80 !important;
+  color: #090d16 !important;
+}
+
+.reveal svg.mermaid-js,
+.reveal .cell-output-display svg,
+.reveal .mermaid svg {
+  width: 96% !important;
+  max-width: 1450px !important;
+  min-width: 900px !important;
+  height: auto !important;
+  max-height: 520px !important;
+  margin: 1.5em auto !important;
+  display: block !important;
+  background-color: #f8fafc !important;
+  border-radius: 12px !important;
+  padding: 20px 24px !important;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08) !important;
+  border: 1px solid #cbd5e1 !important;
+}
+
+.reveal svg.mermaid-js .node .label,
+.reveal svg.mermaid-js .edgeLabel {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
+}
+
+/* ==========================================================================
+   3. TIPOGRAFÍA Y ENCABEZADOS DE CONTENIDO (FONDO CLARO)
+   ========================================================================== */
+.reveal section:not(.title-slide):not(.dark-chapter-slide):not(.level1):not(.has-dark-background):not([data-background-color="#090d16"]) h1 {
+  font-size: 1.7em;
+  font-weight: 800;
+  color: #0f172a;
+  letter-spacing: -0.02em;
+  border-bottom: 2.5px solid #2563eb;
+  padding-bottom: 0.2em;
+  margin-top: 0.1em;
+  margin-bottom: 0.45em;
+}
+
+.reveal section:not(.title-slide):not(.dark-chapter-slide):not(.level1):not(.has-dark-background):not([data-background-color="#090d16"]) h2 {
+  font-size: 1.35em;
+  font-weight: 700;
+  color: #1e293b;
+  letter-spacing: -0.01em;
+  margin-top: 0.15em;
+  margin-bottom: 0.4em;
+  border-bottom: 1.5px solid #e2e8f0;
+  padding-bottom: 0.12em;
+}
+
+.reveal section:not(.title-slide):not(.dark-chapter-slide):not(.level1):not(.has-dark-background):not([data-background-color="#090d16"]) h3 {
+  font-size: 1.15em;
+  font-weight: 600;
+  color: #2563eb;
+  margin-top: 0.25em;
+  margin-bottom: 0.25em;
+}
+
+.reveal section:not(.title-slide):not(.dark-chapter-slide):not(.level1):not(.has-dark-background):not([data-background-color="#090d16"]) h4 {
+  font-size: 1.0em;
+  font-weight: 600;
+  color: #475569;
+  margin-bottom: 0.2em;
+}
+
+/* Párrafos, listas y texto en diapositivas claras */
+.reveal section:not(.title-slide):not(.dark-chapter-slide):not(.level1):not(.has-dark-background):not([data-background-color="#090d16"]) p {
+  font-size: 0.95em;
+  line-height: 1.5;
+  color: #334155;
+  margin-bottom: 0.5em;
+}
+
+.reveal section:not(.title-slide):not(.dark-chapter-slide):not(.level1):not(.has-dark-background):not([data-background-color="#090d16"]) ul {
+  font-size: 0.95em;
+  line-height: 1.5;
+  color: #334155;
+  margin-left: 1.4em;
+  margin-bottom: 0.5em;
+  list-style-type: disc !important;
+}
+
+.reveal section:not(.title-slide):not(.dark-chapter-slide):not(.level1):not(.has-dark-background):not([data-background-color="#090d16"]) ol {
+  font-size: 0.95em;
+  line-height: 1.5;
+  color: #334155;
+  margin-left: 1.4em;
+  margin-bottom: 0.5em;
+  list-style-type: decimal !important;
+}
+
+.reveal section:not(.title-slide):not(.dark-chapter-slide):not(.level1):not(.has-dark-background):not([data-background-color="#090d16"]) li {
+  color: #334155;
+  margin-bottom: 0.35em;
+}
+
+.reveal section:not(.title-slide):not(.dark-chapter-slide):not(.level1):not(.has-dark-background):not([data-background-color="#090d16"]) strong,
+.reveal section:not(.title-slide):not(.dark-chapter-slide):not(.level1):not(.has-dark-background):not([data-background-color="#090d16"]) b {
+  color: #0f172a;
+  font-weight: 700;
+}
+
+/* ==========================================================================
+   4. CUADROS DE NOTAS Y BLOQUES DE EJEMPLO (CALLOUTS)
+   - Sin reducción de tamaño en cascada para mantener paridad con el texto
+   ========================================================================== */
+.reveal .callout {
+  border-radius: 8px !important;
+  border-left-width: 4px !important;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.04) !important;
+  font-size: 0.95em !important;
+  margin: 0.6em 0 !important;
+  padding: 12px 18px !important;
+  background-color: #f8fafc !important;
+  box-sizing: border-box !important;
+  width: 100% !important;
+}
+
+.reveal .callout .callout-header {
+  font-size: 1.0em !important;
+  font-weight: 700 !important;
+  margin-bottom: 8px !important;
+}
+
+.reveal .callout .callout-icon {
+  margin-right: 6px !important;
+}
+
+.reveal .callout .callout-body {
+  font-size: 1em !important;
+}
+
+.reveal section:not(.title-slide):not(.dark-chapter-slide):not(.level1):not(.has-dark-background):not([data-background-color="#090d16"]) .callout p,
+.reveal section:not(.title-slide):not(.dark-chapter-slide):not(.level1):not(.has-dark-background):not([data-background-color="#090d16"]) .callout li {
+  font-size: 1em !important;
+  line-height: 1.5 !important;
+  color: #1e293b !important;
+  margin-bottom: 0.35em !important;
+}
+
+/* Callouts anidados (ej. soluciones dentro de ejercicios) */
+.reveal .callout .callout {
+  font-size: 1em !important;
+  margin: 0.45em 0 !important;
+  padding: 10px 16px !important;
+  box-shadow: none !important;
+  border-left-width: 3.5px !important;
+}
+
+/* ==========================================================================
+   5. RENDERIZADO MATEMÁTICO VECTORIAL NÍTIDO Y UNIFORME (KATEX)
+   ========================================================================== */
+.reveal .katex {
+  font-size: 1.05em !important;
+  font-weight: 400 !important;
+}
+
+.reveal .katex-display,
+.reveal .math.display {
+  font-size: 1.05em !important;
+  margin: 0.45em auto !important;
+  padding: 0.1em 0 !important;
+  text-align: center !important;
+  line-height: 1.35 !important;
+}
+
+.reveal .katex-display > .katex {
+  font-size: 1.0em !important;
+}
+
+.reveal .callout .katex-display,
+.reveal .callout .math.display {
+  font-size: 1.05em !important;
+  margin: 0.4em 0 !important;
+  line-height: 1.35 !important;
+}
+
+.reveal .callout .katex,
+.reveal .callout .math.inline {
+  font-size: 1.05em !important;
+}
+
+/* ==========================================================================
+   6. FIGURAS E IMÁGENES (Fondo Transparente, Tamaño Prominente y Centrado)
+   ========================================================================== */
+.reveal figure,
+.reveal .quarto-figure {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+  margin: 0.8em auto !important;
+  width: 100% !important;
+}
+
+.reveal img,
+.reveal figure img,
+.reveal .quarto-figure img {
+  max-width: 85% !important;
+  max-height: 440px !important;
+  height: auto !important;
+  display: block !important;
+  margin: 0 auto !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  object-fit: contain !important;
+}
+
+.reveal video,
+.reveal figure video,
+.reveal .quarto-figure video {
+  max-width: 75% !important;
+  max-height: 400px !important;
+  height: auto !important;
+  display: block !important;
+  margin: 0 auto !important;
+  border-radius: 8px !important;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12) !important;
+}
+
+.reveal .caption {
+  font-size: 0.78em !important;
+  color: #64748b !important;
+  font-style: italic !important;
+  margin-top: 6px !important;
+  text-align: center !important;
+}
+
+/* ==========================================================================
+   7. TABLAS Y CÓDIGO (DIAPOSITIVAS CLARAS)
+   ========================================================================== */
+.reveal section:not(.title-slide):not(.dark-chapter-slide):not(.level1):not(.has-dark-background):not([data-background-color="#090d16"]) table {
+  font-size: 0.82em;
+  margin: 0.6em auto;
+  border-collapse: collapse;
+  width: 95%;
+  max-width: 1200px;
+}
+
+.reveal section:not(.title-slide):not(.dark-chapter-slide):not(.level1):not(.has-dark-background):not([data-background-color="#090d16"]) table th {
+  background-color: #f1f5f9;
+  color: #0f172a;
+  font-weight: 700;
+  padding: 6px 10px;
+  border-bottom: 2px solid #cbd5e1;
+}
+
+.reveal section:not(.title-slide):not(.dark-chapter-slide):not(.level1):not(.has-dark-background):not([data-background-color="#090d16"]) table td {
+  padding: 6px 10px;
+  border-bottom: 1px solid #e2e8f0;
+  color: #334155;
+}
+
+.reveal pre {
+  font-size: 0.72em;
+  line-height: 1.35;
+  margin: 0.5em auto;
+  border-radius: 6px;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.04);
+  max-width: 100%;
+}
+
+.reveal section:not(.title-slide):not(.dark-chapter-slide):not(.level1):not(.has-dark-background):not([data-background-color="#090d16"]) code:not(pre code) {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.88em;
+  color: #0f172a;
+  background-color: #f1f5f9;
+  border: 1px solid #e2e8f0;
+  border-radius: 4px;
+  padding: 2px 6px;
+}
+
+/* ==========================================================================
+   8. FOOTER DISCRETO Y DE BAJA ALTURA
+   ========================================================================== */
+.reveal .footer {
+  font-size: 0.42em !important;
+  color: #94a3b8 !important;
+  font-weight: 400 !important;
+  bottom: 8px !important;
+  padding: 0 !important;
+  letter-spacing: 0.01em !important;
+}
+
+.reveal .footer span.author-footer {
+  color: #64748b !important;
+  font-size: 0.92em !important;
+}
+
+.reveal .slide-number {
+  font-size: 0.52em !important;
+  color: #64748b !important;
+  background: transparent !important;
+  font-weight: 600 !important;
+  bottom: 8px !important;
+}
+
+/* Scrollbar estilizada */
+.reveal .slides section::-webkit-scrollbar {
+  width: 6px !important;
+  height: 6px !important;
+  display: block !important;
+}
+
+.reveal .slides section::-webkit-scrollbar-track {
+  background: transparent !important;
+}
+
+.reveal .slides section::-webkit-scrollbar-thumb {
+  background: #cbd5e1 !important;
+  border-radius: 6px !important;
+}
+
+.reveal .slides section::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8 !important;
+}
+
+/* ==========================================================================
+   WORKFLOW GRID (PIPELINE DE LA CLASE EN DIAPOSITIVAS)
+   ========================================================================== */
+.class-workflow-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  margin: 1.5em auto 0 auto;
+  width: 98%;
+  max-width: 1520px;
+}
+
+.workflow-card {
+  background: #ffffff;
+  border-radius: 14px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+  padding: 24px 20px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.workflow-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.1);
+}
+
+.workflow-badge {
+  display: inline-block;
+  align-self: flex-start;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.75em;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.workflow-card.block-1 {
+  border-top: 4px solid #2563eb;
+}
+.workflow-card.block-1 .workflow-badge {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+.workflow-card.block-2 {
+  border-top: 4px solid #4f46e5;
+}
+.workflow-card.block-2 .workflow-badge {
+  background: #e0e7ff;
+  color: #3730a3;
+}
+
+.workflow-card.block-3 {
+  border-top: 4px solid #d97706;
+}
+.workflow-card.block-3 .workflow-badge {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.workflow-card.block-4 {
+  border-top: 4px solid #16a34a;
+}
+.workflow-card.block-4 .workflow-badge {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.workflow-card h3 {
+  font-size: 1.05em !important;
+  font-weight: 700 !important;
+  color: #0f172a !important;
+  margin: 0 0 12px 0 !important;
+  line-height: 1.3 !important;
+  border-bottom: none !important;
+}
+
+.workflow-task {
+  background: #f8fafc;
+  border-left: 3px solid #2563eb;
+  padding: 10px 12px;
+  border-radius: 0 8px 8px 0;
+  font-size: 0.82em;
+  color: #334155;
+  margin-bottom: 16px;
+  line-height: 1.4;
+}
+
+.workflow-card.block-2 .workflow-task {
+  border-left-color: #4f46e5;
+}
+
+.workflow-card.block-3 .workflow-task {
+  border-left-color: #d97706;
+}
+
+.workflow-card.block-4 .workflow-task {
+  border-left-color: #16a34a;
+}
+
+.workflow-checkpoint {
+  margin-top: auto;
+  padding: 12px 14px;
+  background: #fffbeb;
+  border: 1px dashed #f59e0b;
+  border-radius: 8px;
+  font-size: 0.78em;
+  color: #78350f;
+  line-height: 1.35;
+}
+
+.workflow-checkpoint-title {
+  font-weight: 700;
+  margin-bottom: 4px;
+  color: #b45309;
+}
+
+.workflow-checkpoint-desc {
+  font-style: italic;
+  color: #92400e;
+}
