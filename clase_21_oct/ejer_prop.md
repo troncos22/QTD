@@ -46,55 +46,8 @@ conteos = job.result()[0].data.meas.get_counts()
 print("\nConteos observados:", conteos)
 ```
 
----
-
-### Ejercicio 2: FinOps y Presupuesto Cuántico
-
-#### 1. Contexto Industrial y Problema
-El acceso dedicado a un procesador cuántico superconductor (QPU) tiene un costo elevado y las cuentas académicas o de exploración cuentan con una cuota estricta de $10\text{ minutos}$ mensuales ($600\text{ segundos}$). Un equipo de finanzas cuantitativas teme lanzar un trabajo de $1024$ disparos porque ven que la cola de espera del chip marca $45\text{ minutos}$. Debes auditar los tiempos físicos de operación del chip, calcular cuántos segundos reales de cuota consumirá el experimento y determinar cuántos experimentos mensuales puede ejecutar el equipo.
-
-#### 2. Respuesta Detallada e Interpretación
-En la nube de IBM Quantum existen dos tiempos completamente distintos:
-*   **Tiempo en cola (*Queue time*):** Es el tiempo que el trabajo espera en los servidores clásicos centrales mientras otros usuarios ocupan la QPU. **Es $100\%$ gratuito y no descuenta cuota.**
-*   **Tiempo neto de procesador (*QPU Execution time*):** Es el tiempo físico en que la electrónica criogénica envía pulsos de microondas a los qubits.
-
-Para calcular la duración física de un disparo (*shot*):
-*   Compuertas de 1 qubit: $\mathcal{O}(10^{-8})\text{ s}$ ($\approx 30\text{ ns}$).
-*   Compuertas de 2 qubits (CNOT/CZ): $\mathcal{O}(10^{-7})\text{ s}$ ($\approx 60\text{ a }300\text{ ns}$).
-*   Pulso de lectura (medición): $\approx 1\text{ a }2\text{ }\mu\text{s}$.
-*   Tiempo de relajación térmica entre disparos (para que los qubits vuelvan a $|0\rangle$): $t_{\text{relax}} \approx 100\text{ a }250\text{ }\mu\text{s}$.
-
-Por lo tanto, cada disparo dura aproximadamente $250\text{ }\mu\text{s}$ ($2.5 \times 10^{-4}\text{ s}$). Para $N_{\text{disparos}} = 1024$, el tiempo físico más la sobrecarga de compilación en el controlador clásico toma entre **$1\text{ y }3\text{ segundos}$**. Con $600\text{ segundos}$ al mes, el equipo puede ejecutar entre $200\text{ y }300$ experimentos mensuales si valida sus circuitos localmente antes de despacharlos.
-
-#### 3. Código para Ejecutar
-```python
-import numpy as np
-
-def auditar_presupuesto_qpu(shots=1024, cuota_mensual_min=10):
-    # Tiempos físicos representativos en procesadores superconductores (en segundos)
-    t_circuito = 10e-6       # ~10 microsegundos de compuertas y medición
-    t_relajacion = 200e-6    # ~200 microsegundos de enfriamiento/reset entre disparos
-    t_overhead_control = 1.8 # Sobrecarga electrónica de carga en el generador de ondas (AWG)
-    
-    tiempo_por_trabajo = shots * (t_circuito + t_relajacion) + t_overhead_control
-    cuota_segundos = cuota_mensual_min * 60
-    experimentos_posibles = int(cuota_segundos // tiempo_por_trabajo)
-    
-    # Cálculo de error estadístico máximo (en p = 0.5)
-    sigma_max = 1 / (2 * np.sqrt(shots)) * 100
-    
-    print("=== AUDITORÍA FINOPS DE HARDWARE CUÁNTICO ===")
-    print(f"Disparos por experimento:         {shots}")
-    print(f"Incertidumbre estadística (1σ):   +-{sigma_max:.2f}%")
-    print(f"Tiempo físico neto por trabajo:   {tiempo_por_trabajo:.2f} segundos")
-    print(f"Experimentos mensuales posibles:  ~{experimentos_posibles} corridas")
-
-auditar_presupuesto_qpu(shots=1024, cuota_mensual_min=10)
-```
-
----
-
 ### Ejercicio 3: Transición de I+D a Producción (`SamplerV2`)
+este 
 
 #### 1. Contexto Industrial y Problema
 Un banco heredó scripts cuánticos antiguos donde los desarrolladores declaraban manualmente registros clásicos `QuantumCircuit(3, 3)`, medían cable por cable usando `qc.measure(i, i)` y ejecutaban con métodos obsoletos (`backend.run()`). Tu tarea como arquitecto de software cuántico es refactorizar este código al estándar de producción **Primitives V2** (`SamplerV2`), explicando cómo se estructura ahora el retorno de datos.
@@ -130,59 +83,11 @@ print("Conteos extraídos con estándar V2:", conteos)
 
 ---
 
-### Ejercicio 4: Orquestación Asíncrona en el Edge
-
-#### 1. Contexto Industrial y Problema
-Un sistema de monitoreo logístico necesita enviar un circuito cuántico a los servidores criogénicos de IBM Quantum desde un nodo periférico (*Edge computing*). El nodo no puede quedar congelado esperando la respuesta de la nube. Debes programar el despacho asíncrono seleccionando automáticamente el procesador menos ocupado, transpilar el circuito y almacenar únicamente el identificador del trabajo (`job_id`) para su posterior recolección.
-
-#### 2. Respuesta Detallada e Interpretación
-Cuando operamos sobre hardware real mediante `QiskitRuntimeService`, llamar a `job.result()` inmediatamente después de `sampler.run()` bloquea el hilo de ejecución de Python hasta que el trabajo supere la cola mundial. 
-
-La práctica correcta de ingeniería consiste en:
-1. Consultar dinámicamente la flota de procesadores mediante `service.least_busy(operational=True, simulator=False)`.
-2. Transpilar el circuito adaptándolo a ese procesador específico.
-3. Despachar el trabajo con `sampler.run()` y extraer inmediatamente `job.job_id()` y `job.status()`. El identificador es una cadena persistente que queda guardada en la cuenta de IBM Cloud, permitiendo apagar incluso el computador local sin perder el experimento.
-
-#### 3. Código para Ejecutar
-```python
-from qiskit import QuantumCircuit, transpile
-
-qc_edge = QuantumCircuit(3)
-qc_edge.h(0)
-qc_edge.cx(0, 1)
-qc_edge.cx(1, 2)
-qc_edge.measure_all()
-
-try:
-    from qiskit_ibm_runtime import QiskitRuntimeService, SamplerV2 as Sampler
-    
-    # Conexión al servicio (requiere haber guardado el token previamente)
-    service = QiskitRuntimeService(channel="ibm_cloud")
-    backend_qpu = service.least_busy(operational=True, simulator=False, min_num_qubits=3)
-    print(f"Procesador físico asignado: {backend_qpu.name} ({backend_qpu.num_qubits} qubits)")
-    
-    # Transpilación nivel 3 para el chip asignado
-    qc_transpilado = transpile(qc_edge, backend=backend_qpu, optimization_level=3)
-    
-    # Despacho asíncrono
-    sampler_qpu = Sampler(mode=backend_qpu)
-    job_qpu = sampler_qpu.run([qc_transpilado], shots=1024)
-    
-    id_trabajo = job_qpu.job_id()
-    estado_inicial = job_qpu.status()
-    print(f"Trabajo despachado exitosamente. Job ID: {id_trabajo} | Estado: {estado_inicial}")
-
-except Exception as e:
-    print(f"Modo simulación local activado (Credenciales IBM no detectadas: {e})")
-    id_trabajo = " DEMO_JOB_ID_987654321"
-    print(f"Job ID simulado registrado para seguimiento asíncrono: {id_trabajo}")
-```
-
----
 
 ## Bloque 2: Algoritmo de Grover (Búsqueda y Amplificación)
 
 ### Ejercicio 5: La Caja Fuerte (Grover de 2 qubits)
+este
 
 #### 1. Contexto Industrial y Problema
 En una auditoría de seguridad informática, debes demostrar cómo un procesador cuántico encuentra una clave PIN de 2 bits ($N = 2^2 = 4$ combinaciones posibles) oculta tras una función de caja negra. El PIN correcto es el estado $|\omega\rangle = |11\rangle$. Mientras un sistema clásico requiere probar hasta 3 veces (y en promedio $2.25$ consultas), debes diseñar el circuito de Grover para hallar la combinación en **exactamente 1 consulta** con un $100\%$ de certeza teórica.
@@ -232,8 +137,8 @@ print("\nResultado de la auditoría (100% en '11'):", conteos)
 
 ---
 
-### Ejercicio 6: Enrutamiento Logístico (Oráculo de 3 qubits)
-
+### Ejercicio 6: Enrutamiento Logístico (qiskit oracle de 3 qubits)
+este 
 #### 1. Contexto Industrial y Problema
 Una empresa de transporte urbano evalúa 8 rutas posibles codificadas en 3 bits ($N = 8$). Debido a un corte de tránsito imprevisto, solo la ruta número 5 (en binario `'101'`) cumple con todas las restricciones de entrega a tiempo. Construye una función modular en Qiskit que implemente el **Oráculo de Fase** capaz de reconocer exclusivamente el estado $|101\rangle$ e invertir el signo de su amplitud sin alterar ningún otro estado.
 
@@ -290,103 +195,8 @@ for idx, amp in enumerate(vector_estado.data):
 
 ---
 
-### Ejercicio 7: Amplificando la Anomalía (Difusor de 3 qubits)
-
-#### 1. Contexto Industrial y Problema
-En un sistema de detección de fraude bancario, el oráculo ya ha marcado la transacción anómala con una fase negativa ($-\frac{1}{\sqrt{8}}$). Sin embargo, si medimos el sistema en ese instante, todas las transacciones tienen exactamente la misma probabilidad de aparecer ($\left|\pm\frac{1}{\sqrt{8}}\right|^2 = \frac{1}{8} = 12.5\%$). Construye el **Operador de Difusión** de 3 qubits y demuestra numéricamente cómo transforma esa diferencia de fase invisible en una amplificación masiva de probabilidad.
-
-#### 2. Respuesta Detallada e Interpretación
-El operador de difusión $D = 2|s\rangle\langle s| - I$ realiza una **inversión respecto a la media aritmética** de todas las amplitudes ($\alpha_x' = 2\mu - \alpha_x$):
-1. Antes del difusor (tras el oráculo), 7 estados tienen amplitud $+\frac{1}{\sqrt{8}} \approx +0.3536$ y el estado marcado tiene $-\frac{1}{\sqrt{8}} \approx -0.3536$.
-2. La media de las 8 amplitudes baja a:
-   $$\mu = \frac{7(0.3536) - 0.3536}{8} = \frac{6}{8\sqrt{8}} \approx +0.2652$$
-3. Al reflejar respecto a $\mu$:
-   *   Estados no marcados: $2(0.2652) - 0.3536 = +0.1768$ (su probabilidad cae a $(0.1768)^2 = 3.125\%$).
-   *   Estado anómalo marcado: $2(0.2652) - (-0.3536) = +0.8839$ (su probabilidad salta a $(0.8839)^2 = 78.125\%$ en solo 1 paso).
-
-Circuitalmente, dado que $|s\rangle = H^{\otimes n}|0\rangle^{\otimes n}$, el difusor se implementa como $H^{\otimes n}$ seguido de un cambio de fase sobre $|000\rangle$ (usando $X^{\otimes n}$, `mcx` con $H$, y $X^{\otimes n}$) y cerrando con $H^{\otimes n}$.
-
-#### 3. Código para Ejecutar
-```python
-from qiskit import QuantumCircuit
-from qiskit.quantum_info import Statevector
-import numpy as np
-
-def construir_difusor(n_qubits: int) -> QuantumCircuit:
-    qc = QuantumCircuit(n_qubits, name="Difusor")
-    ultimo = n_qubits - 1
-    
-    qc.h(range(n_qubits))
-    qc.x(range(n_qubits))
-    
-    # MCZ sobre el último qubit
-    qc.h(ultimo)
-    qc.mcx(list(range(ultimo)), ultimo)
-    qc.h(ultimo)
-    
-    qc.x(range(n_qubits))
-    qc.h(range(n_qubits))
-    return qc
-
-# Probamos 1 iteración (Oráculo |101> + Difusor)
-qc_1paso = QuantumCircuit(3)
-qc_1paso.h([0, 1, 2])
-qc_1paso.compose(construir_oraculo_ruta("101"), inplace=True)
-qc_1paso.compose(construir_difusor(3), inplace=True)
-
-sv = Statevector.from_instruction(qc_1paso)
-probs = sv.probabilities_dict()
-
-print("Probabilidades tras 1 sola iteración (Inversión sobre la media):")
-for estado, p in sorted(probs.items()):
-    print(f"  Estado |{estado}>: {p*100:6.2f}%")
-```
-
----
-
-### Ejercicio 8: Control de Calidad Múltiple (2 soluciones en Grover)
-
-#### 1. Contexto Industrial y Problema
-En una planta de semiconductores se inspecciona un lote de 8 obleas de silicio ($N = 8$). Los sensores ópticos indican que existen exactamente **2 obleas defectuosas** correspondientes a los códigos binarios `'011'` y `'110'`. Modifica el algoritmo de Grover para marcar ambos estados simultáneamente, calcula analíticamente el nuevo número óptimo de iteraciones $k$ y verifica la distribución resultante.
-
-#### 2. Respuesta Detallada e Interpretación
-Cuando existen $M$ elementos marcados dentro de un espacio de tamaño $N$, el subespacio de soluciones $|\omega\rangle$ es la superposición uniforme de las $M$ respuestas válidas:
-$$|\omega\rangle = \frac{1}{\sqrt{M}} \sum_{x \in \text{soluciones}} |x\rangle$$
-
-El ángulo inicial $\theta$ entre el estado uniforme $|s\rangle$ y el eje de los estados incorrectos $|s'\rangle$ cumple:
-$$\sin(\theta) = \sqrt{\frac{M}{N}}$$
-
-Para nuestro caso con $N = 8$ y $M = 2$:
-$$\sin(\theta) = \sqrt{\frac{2}{8}} = \sqrt{\frac{1}{4}} = 0.5 \implies \theta = 30^\circ = \frac{\pi}{6}\text{ rad}$$
-
-Al igual que en el Ejercicio 5 de 2 qubits, como $\theta = 30^\circ$, **basta exactamente $k = 1$ iteración** para alcanzar $\theta_1 = 3\theta = 90^\circ$. La probabilidad de medir una oblea defectuosa será del **$100\%$** (repartida en un $50\%$ para `'011'` y un $50\%$ para `'110'$, con $0\%$ de probabilidad para las 6 obleas sanas).
-
-#### 3. Código para Ejecutar
-```python
-from qiskit import QuantumCircuit
-from qiskit.primitives import StatevectorSampler
-
-qc_multi = QuantumCircuit(3)
-qc_multi.h([0, 1, 2])
-qc_multi.barrier()
-
-# Oráculo doble: marcamos |011> y |110> en la misma iteración
-qc_multi.compose(construir_oraculo_ruta("011"), inplace=True)
-qc_multi.compose(construir_oraculo_ruta("110"), inplace=True)
-qc_multi.barrier()
-
-# Aplicamos el difusor (k = 1 iteración es el óptimo exacto para M=2, N=8)
-qc_multi.compose(construir_difusor(3), inplace=True)
-qc_multi.measure_all()
-
-conteos = StatevectorSampler().run([qc_multi], shots=2048).result()[0].data.meas.get_counts()
-print("Conteos con 2 soluciones marcadas (k=1):", conteos)
-```
-
----
-
 ### Ejercicio 9: La Trampa de la Sobre-rotación
-
+este 
 #### 1. Contexto Industrial y Problema
 Un ingeniero cuántico junior pensó que el algoritmo de Grover funcionaba como los algoritmos clásicos iterativos (donde iterar más veces siempre mejora o mantiene la convergencia) y configuró $k = 4$ iteraciones para buscar 1 elemento en una base de 8 registros ($N = 8$). Para su sorpresa, el algoritmo arrojó resultados peores que elegir al azar. Demuestra mediante un barrido paramétrico desde $k = 0$ hasta $k = 6$ por qué ocurrió este colapso.
 
@@ -430,6 +240,7 @@ for k in range(7):
 ---
 
 ### Ejercicio 10: Escalando la Base de Datos (Grover de 5 qubits)
+este 
 
 #### 1. Contexto Industrial y Problema
 Una aseguradora necesita localizar una póliza específica dentro de un bloque desestructurado de $N = 32$ registros ($n = 5$ qubits). La póliza buscada corresponde a la cadena binaria `'10110'`. Calcula el número óptimo de iteraciones $k_{\text{óptimo}}$, ensambla el circuito de 5 qubits de forma modular y verifica que la probabilidad de éxito supera el $99\%$.
@@ -481,7 +292,7 @@ print(f"Probabilidad empírica de éxito para |{objetivo}>: {prob_exito:.2f}% ({
 ## Bloque 3: Topología, Ruido y Supercómputo (HPC & GPUs)
 
 ### Ejercicio 11: Compilando para Hardware Restringido (`CouplingMap`)
-
+util para visualizar 
 #### 1. Contexto Industrial y Problema
 Un grupo de ingeniería desarrolla un circuito que entrelaza directamente el qubit $q_0$ con el qubit $q_2$. Sin embargo, al enviarlo al procesador superconductor real, descubren que los qubits físicos están dispuestos en una línea recta donde $q_0$ solo está conectado con $q_1$, y $q_1$ solo está conectado con $q_2$ ($0 \leftrightarrow 1 \leftrightarrow 2$). Demuestra cómo el transpilador de Qiskit resuelve esta limitación geométrica e identifica el costo en compuertas de 2 qubits.
 
@@ -497,7 +308,9 @@ Así, una sola CNOT distante se convierte en hasta 4 compuertas CNOT físicas en
 ```python
 from qiskit import QuantumCircuit, transpile
 from qiskit.transpiler import CouplingMap
-
+"""
+qiskit draw para dibujar circuito y dibujar circuito
+"""
 # Circuito ideal que intenta conectar q0 directamente con q2
 qc_distante = QuantumCircuit(3)
 qc_distante.h(0)
@@ -519,7 +332,7 @@ print("Total de compuertas CNOT tras enrutamiento:", qc_mapeado.count_ops().get(
 ---
 
 ### Ejercicio 12: El Costo Térmico del Enrutamiento (Optimización Nivel 0 vs Nivel 3)
-
+Dejar de bonus
 #### 1. Contexto Industrial y Problema
 Cada compuerta de 2 qubits ($\text{CNOT}$) en un procesador real introduce aproximadamente un $1\%$ a $2\%$ de error físico. Antes de lanzar el algoritmo de Grover de 3 qubits a producción sobre una topología lineal, debes realizar un *benchmark* del compilador comparando el nivel de optimización nulo (`optimization_level=0`) frente al nivel de síntesis algebraica agresiva (`optimization_level=3`), cuantificando cuántas compuertas CNOT logras ahorrar.
 
@@ -554,6 +367,7 @@ for nivel in [0, 1, 2, 3]:
 ---
 
 ### Ejercicio 13: Prueba de Estrés Ambiental (Simulación con Ruido Local)
+absolutamente si
 
 #### 1. Contexto Industrial y Problema
 Antes de gastar presupuesto en el procesador real, el líder técnico te pide simular cómo se comportará el circuito de Grover transpilado (obtenido en el Ejercicio 12 con `optimization_level=3`) si el hardware físico presenta una tasa de error de despolarización del $2.0\%$ en cada compuerta CNOT. Construye el modelo de ruido en `qiskit_aer`, ejecuta la simulación ruidosa y compara el porcentaje de éxito con la predicción teórica de supervivencia de compuertas.
@@ -591,7 +405,7 @@ print(f"Probabilidad con ruido físico: {prob_110_ruido:.2f}% (El estado |110> s
 ---
 
 ### Ejercicio 14: El Muro de Memoria RAM (Escalamiento Clásico)
-
+dejar este está bonito
 #### 1. Contexto Industrial y Problema
 Un laboratorio farmacéutico desea simular moléculas grandes en sus servidores clásicos antes de usar computadores cuánticos. Te piden escribir un script que calcule exactamente cuánta memoria RAM consume el vector de estado desde $n = 10$ hasta $n = 40$ qubits, y que mida en vivo el tiempo que tarda un único núcleo de CPU en simular 1 iteración de Grover entre $n = 14$ y $n = 22$ qubits, demostrando por qué el tiempo y la memoria crecen como $\mathcal{O}(2^n)$.
 
@@ -641,6 +455,7 @@ for n in [14, 16, 18, 20, 22]:
 ---
 
 ### Ejercicio 15: Aceleración con cuQuantum (GPU vs CPU)
+revisar si tenemos el hardware 
 
 #### 1. Contexto Industrial y Problema
 Para superar el cuello de botella del Ejercicio 14 y simular sistemas de 26 a 32 qubits en segundos, el centro de supercómputo ha instalado tarjetas gráficas NVIDIA A100 con el SDK `cuQuantum` (`qiskit-aer-gpu`). Debes escribir el script de evaluación que detecte si hay una GPU activa, compare el tiempo de simulación frente a la CPU y explique físicamente por qué las GPUs logran aceleraciones de más de $200\times$ en simulación cuántica.
@@ -698,235 +513,3 @@ for n in qubits_test:
 ```
 
 ---
-
-## Bloque 4: Análisis en Hardware Real y Mitigación de Errores
-
-### Ejercicio 16: Recuperación de la Telemetría (Job Retrieval)
-
-#### 1. Contexto Industrial y Problema
-El trabajo asíncrono de Grover ($N=8$, buscando el estado $|110\rangle$ con $4096$ disparos) que tu equipo despachó temprano por la mañana a la cola de IBM Quantum ya ha finalizado su ejecución en el procesador superconductor `ibm_torino` (arquitectura Heron). Escribe el protocolo de recuperación mediante `service.job(job_id)` que consulte el estado del trabajo sin reenviar el circuito y extraiga el diccionario de conteos físicos.
-
-#### 2. Respuesta Detallada e Interpretación
-En entornos de producción, separar el script de despacho (*producer*) del script de análisis (*consumer*) evita consumir cuota por error al reejecutar celdas de Jupyter. El método `service.job(job_id)` consulta vía API REST los servidores de IBM Cloud:
-*   Si `job.status()` retorna `'QUEUED'` o `'RUNNING'`, el script informa que aún debe esperarse.
-*   Si retorna `'DONE'`, descargamos la telemetría con `job.result()[0].data.meas.get_counts()`.
-
-#### 3. Código para Ejecutar
-```python
-def recuperar_telemetria_ibm(job_id: str):
-    conteos_qpu = None
-    try:
-        from qiskit_ibm_runtime import QiskitRuntimeService
-        service = QiskitRuntimeService(channel="ibm_cloud")
-        job_recuperado = service.job(job_id)
-        estado = job_recuperado.status()
-        print(f"Estado del trabajo {job_id}: {estado}")
-        
-        if estado in ['DONE', 'COMPLETED']:
-            conteos_qpu = job_recuperado.result()[0].data.meas.get_counts()
-            print("Datos descargados en vivo desde IBM Quantum.")
-    except Exception as e:
-        print(f"Modo offline activo ({e}). Cargando telemetría experimental de referencia (IBM Heron - 4096 shots):")
-        
-    if conteos_qpu is None:
-        # Dataset experimental auténtico capturado en QPU IBM Heron para Grover |110>
-        conteos_qpu = {
-            '000': 282, '001': 314, '010': 341, '011': 295,
-            '100': 326, '101': 287, '110': 1984, '111': 267
-        }
-    return conteos_qpu
-
-conteos_reales = recuperar_telemetria_ibm("dbcgvjni0auc73duuqf0")
-print("Conteos crudos de la QPU:", conteos_reales)
-```
-
----
-
-### Ejercicio 17: Análisis SNR (Relación Señal a Ruido)
-
-#### 1. Contexto Industrial y Problema
-En el laboratorio de sensores cuánticos, un resultado ruidoso solo es útil para la toma de decisiones automatizada si la relación de contraste entre la señal objetivo y el piso de ruido promedio (SNR, *Signal-to-Noise Ratio*) supera un umbral crítico de $5.0\times$. A partir de los conteos reales recuperados en el Ejercicio 16, calcula la probabilidad empírica del estado solución $|110\rangle$, el piso de ruido promedio de los 7 estados incorrectos, el factor SNR y el intervalo de confianza al $95\%$ ($\pm 2\sigma$).
-
-#### 2. Respuesta Detallada e Interpretación
-A partir de los $N_{\text{shots}} = 4096$ disparos físicos en la QPU:
-1.  **Probabilidad de la señal ($\hat{p}_{\text{señal}}$):**
-    $$\hat{p}_{110} = \frac{1984}{4096} = 0.484375 \quad (48.44\%)$$
-2.  **Piso de ruido promedio ($\bar{p}_{\text{ruido}}$):** Los $4096 - 1984 = 2112$ disparos restantes se distribuyen casi uniformemente entre los 7 estados incorrectos debido a la despolarización:
-    $$\bar{p}_{\text{ruido}} = \frac{2112 / 7}{4096} \approx \frac{301.71}{4096} \approx 0.07366 \quad (7.37\%)$$
-3.  **Relación de Contraste (SNR):**
-    $$\text{SNR} = \frac{\hat{p}_{110}}{\bar{p}_{\text{ruido}}} = \frac{48.44\%}{7.37\%} \approx 6.58\times$$
-4.  **Error estadístico de muestreo:** $\sigma = \sqrt{\frac{\hat{p}(1-\hat{p})}{4096}} \approx 0.78\% \implies \pm 2\sigma \approx \pm 1.56\%$. Como $6.58\times > 5.0\times$ y el margen estadístico es de apenas $\pm 1.56\%$, la detección de la solución $|110\rangle$ es estadísticamente inequívoca a pesar del ruido del chip.
-
-#### 3. Código para Ejecutar
-```python
-import numpy as np
-
-total_shots = sum(conteos_reales.values())
-shots_exito = conteos_reales.get('110', 0)
-shots_ruido = total_shots - shots_exito
-
-p_exito = shots_exito / total_shots
-p_piso_ruido = (shots_ruido / 7) / total_shots
-snr = p_exito / p_piso_ruido
-
-# Desviación estándar binomial del estimador
-sigma = np.sqrt(p_exito * (1 - p_exito) / total_shots)
-
-print("=== REPORTE DE CALIDAD DE SEÑAL CUÁNTICA (SNR) ===")
-print(f"Probabilidad empírica |110>:      {p_exito*100:.2f}% +- {2*sigma*100:.2f}% (95% IC)")
-print(f"Piso de ruido promedio (7 est.):  {p_piso_ruido*100:.2f}%")
-print(f"Relación Señal/Ruido (SNR):       {snr:.2f}x  --> {'[APROBADO > 5x]' if snr > 5 else '[RECHAZADO]'}")
-```
-
----
-
-### Ejercicio 18: Calibración del Detector (Matriz de Confusión de 1 Qubit)
-
-#### 1. Contexto Industrial y Problema
-El resonador de lectura de microondas de un qubit presenta errores asimétricos de medición (*SPAM errors*): cuando el qubit se prepara en $|0\rangle$, el detector se equivoca un $3.5\%$ de las veces reportando `'1'` ($\epsilon_0 = 0.035$); cuando se prepara en $|1\rangle$ (que es un estado excitado más propenso a decaer durante la medición), se equivoca un $4.5\%$ de las veces reportando `'0'` ($\epsilon_1 = 0.045$). Si al medir un experimento en este qubit obtenemos un $30\%$ de ceros y un $70\%$ de unos, construye la matriz de asignación $A$ y utiliza su inversa $A^{-1}$ para recuperar la distribución verdadera antes de la distorsión del detector.
-
-#### 2. Respuesta Detallada e Interpretación
-La relación entre el vector de probabilidades ideales $\vec{P}_{\text{ideal}}$ y el vector contaminado por el detector $\vec{P}_{\text{medido}}$ sigue la ley estocástica:
-$$\begin{pmatrix} P_{\text{med}}(0) \\ P_{\text{med}}(1) \end{pmatrix} = \begin{pmatrix} 1 - \epsilon_0 & \epsilon_1 \\ \epsilon_0 & 1 - \epsilon_1 \end{pmatrix} \begin{pmatrix} P_{\text{ideal}}(0) \\ P_{\text{ideal}}(1) \end{pmatrix} \iff \vec{P}_{\text{medido}} = A \cdot \vec{P}_{\text{ideal}}$$
-
-Invirtiendo la matriz de calibración $A$:
-$$\vec{P}_{\text{mitigado}} = A^{-1} \cdot \vec{P}_{\text{medido}}$$
-Esta operación de post-procesamiento clásico resta algebraicamente los falsos positivos y falsos negativos sin necesidad de ejecutar circuitos adicionales en el experimento principal.
-
-#### 3. Código para Ejecutar
-```python
-import numpy as np
-
-# Tasas de error de lectura calibradas del detector
-eps0 = 0.035  # P(1|0)
-eps1 = 0.045  # P(0|1)
-
-# Matriz de asignación estocástica A (columnas suman 1)
-A_1q = np.array([
-    [1.0 - eps0, eps1],
-    [eps0,       1.0 - eps1]
-])
-
-A_1q_inv = np.linalg.inv(A_1q)
-
-# Vector medido experimentalmente: 30% en |0>, 70% en |1>
-P_medido_1q = np.array([0.30, 0.70])
-P_mitigado_1q = A_1q_inv @ P_medido_1q
-
-print("Matriz de Calibración A (1-qubit):\n", A_1q)
-print("\nMatriz Inversa A^-1:\n", np.round(A_1q_inv, 4))
-print(f"\nDistribución Medida (Cruda):    P(0) = {P_medido_1q[0]*100:.2f}%, P(1) = {P_medido_1q[1]*100:.2f}%")
-print(f"Distribución Mitigada (Limpia): P(0) = {P_mitigado_1q[0]*100:.2f}%, P(1) = {P_mitigado_1q[1]*100:.2f}%")
-```
-
----
-
-### Ejercicio 19: Mitigación Tensorial de Datos (3 Qubits con Producto de Kronecker)
-
-#### 1. Contexto Industrial y Problema
-Extiende el calibrador del Ejercicio 18 al registro completo de 3 qubits para limpiar los datos experimentales de Grover obtenidos del procesador de IBM en el Ejercicio 16. Construye la matriz de confusión global de $8 \times 8$ mediante el producto tensorial de Kronecker ($A_{3q} = A_2 \otimes A_1 \otimes A_0$), aplica su inversa al vector de probabilidades medidas y cuantifica cuántos puntos porcentuales de visibilidad recupera el estado solución $|110\rangle$.
-
-#### 2. Respuesta Detallada e Interpretación
-Asumiendo que el error de lectura ocurre de manera local e independiente en el resonador de cada qubit, la probabilidad de confusión conjunta entre cualquiera de los $2^3 = 8$ estados posibles viene dada por el producto tensorial de las matrices individuales:
-$$A_{\text{global}} = A^{(q_2)} \otimes A^{(q_1)} \otimes A^{(q_0)} \in \mathbb{R}^{8 \times 8}$$
-
-Al multiplicar $\vec{P}_{\text{mitigado}} = A_{\text{global}}^{-1} \cdot \vec{P}_{\text{medido}}$, es posible que fluctuaciones estadísticas en estados con conteos muy bajos generen valores ligeramente negativos (no físicos). Por ello, el protocolo estándar aplica un recorte a cero (`np.clip(P, 0, 1)`) seguido de una renormalización para garantizar que la distribución mitigada sume exactamente $1$.
-
-#### 3. Código para Ejecutar
-```python
-import numpy as np
-
-# Construimos la matriz global 8x8 mediante producto de Kronecker
-A_3q = np.kron(np.kron(A_1q, A_1q), A_1q)
-A_3q_inv = np.linalg.inv(A_3q)
-
-# Ordenamos los conteos reales del Ejercicio 16 en un vector de probabilidad (de '000' a '111')
-estados_bin = [format(i, '03b') for i in range(8)]
-P_real_vec = np.array([conteos_reales.get(est, 0) / total_shots for est in estados_bin])
-
-# Aplicamos inversión matricial y proyectamos al simplex de probabilidad
-P_mitigado_vec = A_3q_inv @ P_real_vec
-P_mitigado_vec = np.clip(P_mitigado_vec, 0.0, 1.0)
-P_mitigado_vec /= np.sum(P_mitigado_vec)
-
-ganancia = (P_mitigado_vec[6] - P_real_vec[6]) * 100
-
-print(f"{'Estado':<10}{'Prob. Cruda QPU (%)':<24}{'Prob. Mitigada (%)':<22}")
-print("=" * 56)
-for idx, est in enumerate(estados_bin):
-    marca = " <-- OBJETIVO" if est == "110" else ""
-    print(f"|{est}>     {P_real_vec[idx]*100:6.2f}%{' '*17}{P_mitigado_vec[idx]*100:6.2f}%{marca}")
-
-print("=" * 56)
-print(f"Incremento neto de visibilidad en |110>: +{ganancia:.2f} puntos porcentuales")
-```
-
----
-
-### Ejercicio 20: El Despliegue Final End-to-End (Ideal vs. QPU Cruda vs. Mitigada + ZNE)
-
-#### 1. Contexto Industrial y Problema
-Para la presentación ejecutiva de cierre del proyecto ante el directorio de ingeniería, debes consolidar un panel de control que integre las dos grandes técnicas de mitigación de la era NISQ:
-1.  Un gráfico comparativo de las tres distribuciones del algoritmo de Grover (**Simulación Ideal**, **QPU Real Cruda** y **QPU con Mitigación de Lectura $A^{-1}$**).
-2.  Una extrapolación polinomial a ruido cero (**ZNE - *Zero-Noise Extrapolation***) a partir de mediciones del observable realizadas amplificando intencionalmente el ruido del circuito por factores $\lambda \in [1.0, 1.5, 2.0, 2.5, 3.0]$.
-
-#### 2. Respuesta Detallada e Interpretación
-*   **Límite de la mitigación de lectura:** Como observamos en el Ejercicio 19, aplicar $A^{-1}$ eleva el éxito de $|110\rangle$ desde $48.44\%$ hasta $54.33\%$ ($+5.89\%$). ¿Por qué no llega al $94.5\%$ ideal? Porque $A^{-1}$ solo limpia el error ocurrido en los detectores finales, pero no corrige la despolarización sufrida durante las 39 compuertas CNOT previas.
-*   **Complementariedad con ZNE:** Para mitigar el error de las compuertas internas, aplicamos *plegado unitario* ($U \mapsto U(U^\dagger U)^m$), lo que incrementa el nivel de ruido físico por un factor $\lambda \ge 1$. Ajustando un polinomio de segundo grado a los valores medidos $E(\lambda)$ y extrapolando matemáticamente hacia atrás hasta el origen ($\lambda \to 0$), rescatamos una estimación precisa del valor libre de ruido sin requerir millones de qubits físicos de corrección de errores.
-
-#### 3. Código para Ejecutar
-```python
-import numpy as np
-import matplotlib.pyplot as plt
-from qiskit.quantum_info import Statevector
-
-# 1. Obtenemos las probabilidades ideales teóricas para Grover |110> (k=2)
-qc_id = QuantumCircuit(3)
-qc_id.h([0, 1, 2])
-for _ in range(2):
-    qc_id.compose(construir_oraculo_ruta("110"), inplace=True)
-    qc_id.compose(construir_difusor(3), inplace=True)
-probs_dict_id = Statevector.from_instruction(qc_id).probabilities_dict()
-P_ideal_vec = np.array([probs_dict_id.get(est, 0.0) for est in estados_bin])
-
-# 2. Datos de Extrapolación a Ruido Cero (ZNE) mediante plegado unitario
-factores_lambda = np.array([1.0, 1.5, 2.0, 2.5, 3.0])
-valores_zne_medidos = np.array([0.74, 0.62, 0.51, 0.43, 0.35])
-
-# Ajuste cuadrático y evaluación en lambda = 0.0
-poly_zne = np.poly1d(np.polyfit(factores_lambda, valores_zne_medidos, deg=2))
-valor_extrapolado_cero = poly_zne(0.0)
-
-# 3. Visualización Ejecutiva en Doble Panel
-fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 5), dpi=100)
-
-# Panel Izquierdo: Comparativa de Distribuciones de Grover
-x = np.arange(len(estados_bin))
-w = 0.26
-ax1.bar(x - w, P_ideal_vec * 100, w, label="1. Simulación Ideal (94.5%)", color="#1e40af")
-ax1.bar(x,     P_real_vec * 100,  w, label="2. QPU Real Cruda (48.4%)", color="#dc2626")
-ax1.bar(x + w, P_mitigado_vec * 100, w, label="3. QPU Mitigada A^-1 (54.3%)", color="#16a34a")
-ax1.set_xticks(x)
-ax1.set_xticklabels([f"|{s}>" for s in estados_bin])
-ax1.set_ylabel("Probabilidad de Medición (%)")
-ax1.set_title("Algoritmo de Grover: Impacto del Ruido y Mitigación de Lectura")
-ax1.legend()
-ax1.grid(axis='y', linestyle=':', alpha=0.6)
-
-# Panel Derecho: Curva de Extrapolación a Ruido Cero (ZNE)
-lambda_continuo = np.linspace(0.0, 3.1, 100)
-ax2.plot(lambda_continuo, poly_zne(lambda_continuo), '--', color="#2563eb", label="Ajuste Polinomial (Grado 2)")
-ax2.scatter(factores_lambda, valores_zne_medidos, color="#dc2626", s=70, zorder=5, label="Mediciones con Ruido Amplificado")
-ax2.scatter([0.0], [valor_extrapolado_cero], color="#16a34a", s=110, marker="*", zorder=6, label=f"Extrapolación ZNE (λ=0): {valor_extrapolado_cero:.3f}")
-ax2.axvline(0.0, color="#64748b", linestyle=":", alpha=0.8)
-ax2.set_xlabel("Factor de Escalamiento de Ruido Físico (λ)")
-ax2.set_ylabel("Valor Esperado del Observable")
-ax2.set_title("Zero-Noise Extrapolation (ZNE) por Plegado Unitario")
-ax2.legend()
-ax2.grid(True, linestyle=':', alpha=0.6)
-
-plt.tight_layout()
-plt.show()
-
-print(f"Resumen Ejecutivo ZNE -> Valor con ruido base (λ=1): {valores_zne_medidos[0]:.3f} | Valor recuperado en λ=0: {valor_extrapolado_cero:.3f}")
-```
